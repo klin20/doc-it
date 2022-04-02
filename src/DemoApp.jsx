@@ -81,22 +81,26 @@ function DemoApp() {
 
 
 
-        <div className='demo-app-main'>
-          {
-            calendarVisible ?
+        {
+          calendarVisible ?
 
+            <div className='demo-app-main'>
               <FullCalendar
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                 headerToolbar={{
-                  left: 'prev,next today myCustomButton',
-                  center: 'title',
-                  right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                  left: 'title myCustomButton',
+                  // center: 'today',
+                  right: 'dayGridMonth,timeGridWeek,timeGridDay prev,next'
                 }}
                 initialView='timeGridWeek'
                 selectMirror={true}
                 dayMaxEvents={true}
                 weekends={true}
                 events={events}
+                nowIndicator={true}
+
+
+                // now={new Date().getUTCHours()}
 
                 //===============================================
                 customButtons={{
@@ -127,10 +131,11 @@ function DemoApp() {
                 }}
               //===============================================
 
-              /> :
-              null
-          }
-        </div>
+              />
+            </div>
+            :
+            null
+        }
 
         {
           todoVisible ?

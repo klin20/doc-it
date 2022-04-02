@@ -13,7 +13,7 @@ function ToDo() {
     // NO LOCAL SAVING/INDEXEDDB FUNCTION YET
     // IF NEED SOME DATA TO WORK ON, UNCOMMENT LINE IN useEffect below
     useEffect(() => {
-        // setAllNotes(sampleEvents)
+        setAllNotes(sampleEvents)
     } , [])
 
     

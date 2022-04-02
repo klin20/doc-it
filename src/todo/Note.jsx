@@ -112,47 +112,55 @@ function Note(props) {
     return (
         <div className="note">
 
-            <input
-                placeholder={`untitled note ${props.noteID}`}
-                onChange={(e) => { updateTitle(e) }}
-            ></input>
-            <br />
-            <button
-                onClick={(e) => { removeNote(e) }}>
-                remove note
-            </button>
-            <br />
-            <br />
+            <div className='titleAndRemoveButton'>
 
+                <input
+                    placeholder={`untitled note`}
+                    onChange={(e) => { updateTitle(e) }}
+                ></input>
+                <button
+                    onClick={(e) => { removeNote(e) }}>
+                    remove note
+                </button>
+            </div>
 
-            {
-                props.noteContent.items.map((item) => {
-                    return (
-                        <div>
+            <ul>
+                {
+                    props.noteContent.items.map((item) => {
+                        return (
+                            <li >
+                                <input
+                                    type="checkbox"
+                                    id={item.itemID}
 
-                            <TextareaAutosize
-                                key={item.itemID}
-                                id={item.itemID}
-                                className={item.done}
-                                defaultValue={item.itemID}
-                                onChange={(e) => updateContent(e)}
-                            />
+                                    // remove problem shown to Kelly
+                                    // checked, but remove pass the greenbox to another field, even if that field is not done
+                                    checked={
+                                        item.done === 'done' ?
+                                        true :
+                                        false
+                                    }
+                                    onClick={(e) => { toggleDone(e) }}
+                                />
 
-                            <input
-                                type="checkbox"
-                                id={item.itemID}
-                                onClick={(e) => { toggleDone(e) }}
-                            />
+                                <TextareaAutosize
+                                    key={item.itemID}
+                                    id={item.itemID}
+                                    className={item.done}
+                                    placeholder='task'
+                                    onChange={(e) => updateContent(e)}
+                                />
 
-                            <button
-                                id={item.itemID}
-                                onClick={(e) => { removeItem(e) }}
-                            >remove</button>
+                                <button
+                                    id={item.itemID}
+                                    onClick={(e) => { removeItem(e) }}
+                                >remove</button>
 
-                        </div>
-                    )
-                })
-            }
+                            </li>
+                        )
+                    })
+                }
+            </ul>
 
             <button
                 onClick={(e) => { addItem(e) }}>
