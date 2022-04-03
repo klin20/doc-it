@@ -15,28 +15,22 @@ export const updateDb = (e, typeOfEvent) => {
     window.shimIndexedDB;
 
   // Open (or create) the database
-  const request = indexedDB.open("CarsDatabase", 1);
+  const request = indexedDB.open("EventsDatabase", 1);
 
   request.onerror = function (event) {
     console.error("An error occurred with IndexedDB");
     console.error(event);
   };
 
-  // Create the schema on create and version upgrade
-  request.onupgradeneeded = function () {
-    const db = request.result;
-    const store = db.createObjectStore("cars", { keyPath: "id" });
-
-  };
-
   request.onsuccess = function () {
     const db = request.result;
-    const transaction = db.transaction("cars", "readwrite");
+    const transaction = db.transaction("events", "readwrite");
 
-    const store = transaction.objectStore("cars");
+    const store = transaction.objectStore("events");
 
     // Add some data
     if (typeOfEvent === 'save') {
+      console.log(e)
       store.put(e);
     } else if (typeOfEvent === 'delete') {
       store.delete(e)

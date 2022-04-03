@@ -39,14 +39,15 @@ function Note(props) {
     }
 
     const updateTitle = (e) => {
-        let updatedNotes = props.allNotes.map((note) => {
+        // let updatedNotes = props.allNotes.map((note) => {
 
-            if (note.noteID === props.noteID) {
-                note.title = e.target.value
-            }
-            return note
-        })
-        props.setAllNotes(updatedNotes)
+        //     if (note.noteID === props.noteID) {
+        //         note.title = e.target.value
+        //     }
+        //     return note
+        // })
+        // props.setAllNotes(updatedNotes)
+        console.log(e)
     }
 
 
@@ -88,10 +89,7 @@ function Note(props) {
             return note
         })
 
-        console.log('trying to save updated allNotes')
         props.setAllNotes(updatedNotes)
-        console.log(updatedNotes)
-
     }
 
     const toggleDone = (e) => {
@@ -141,6 +139,8 @@ function Note(props) {
 
                 <input
                     defaultValue={props.noteContent.title}
+                    placeholder={'note title here (max: 20)'}
+                    maxLength={20}
                     onChange={(e) => { updateTitle(e) }}
                 ></input>
                 <button

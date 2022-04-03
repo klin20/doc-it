@@ -10,7 +10,7 @@ export const updateDb = (e, typeOfEvent) => {
       window.shimIndexedDB;
   
     // Open (or create) the database
-    const request = indexedDB.open("CarsDatabase", 1);
+    const request = indexedDB.open("NotesDatabase", 1);
   
     request.onerror = function (event) {
       console.error("An error occurred with IndexedDB");
@@ -20,7 +20,7 @@ export const updateDb = (e, typeOfEvent) => {
     // Create the schema on create and version upgrade
     request.onupgradeneeded = function () {
       const db = request.result;
-      const store = db.createObjectStore("notes", { keyPath: "id" });
+      const store = db.createObjectStore("notes", { keyPath: "noteID" });
   
     };
   
@@ -32,6 +32,7 @@ export const updateDb = (e, typeOfEvent) => {
   
       // Add some data
       if (typeOfEvent === 'save') {
+        console.log(e)
         store.put(e);
       } else if (typeOfEvent === 'delete') {
         store.delete(e)

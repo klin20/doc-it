@@ -23,19 +23,29 @@ function DemoApp() {
       window.shimIndexedDB;
 
     // Open (or create) the database
-    const request = indexedDB.open("CarsDatabase", 1);
+    const request = indexedDB.open("EventsDatabase", 1);
+
+    request.onerror = function (event) {
+      console.error("An error occurred with IndexedDB");
+      console.error(event);
+    };
+
+    // Create the schema on create and version upgrade
+    // IF FIRST TIME, USER WONT HAVE RIGHT DB, THIS SETS IT UP
+    request.onupgradeneeded = function () {
+      const db = request.result;
+      const store = db.createObjectStore("events", { keyPath: "id" });
+    };
 
     request.onsuccess = (event) => {
 
       const db = request.result;
-      const transaction = db.transaction("cars", "readonly");
-      const store = transaction.objectStore("cars");
-
+      const transaction = db.transaction("events", "readonly");
+      const store = transaction.objectStore("events");
       const subaru = store.getAll();
 
       subaru.onsuccess = () => {
-        console.log(subaru.result)
-        // setEvents(subaru.result)
+        // console.log(subaru.result)
         setEvents(subaru.result);
       };
     }
@@ -45,7 +55,8 @@ function DemoApp() {
   const [popupVisible, setPopupVisible] = useState(false)
   const [clickedEvent, setClickedEvent] = useState(null)
 
-  const [calendarVisible, setCalendarVisible] = useState(true)
+  // CHANGE BACK WHEN DONE WITH TODO DB
+  const [calendarVisible, setCalendarVisible] = useState(false)
   const [todoVisible, setTodoVisible] = useState(true)
 
   // TIME FORMAT FROM SELECTING EVENT
