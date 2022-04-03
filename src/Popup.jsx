@@ -165,6 +165,7 @@ function Popup(props) {
         <input
           type="text"
           name='title'
+          required={true}
           defaultValue={props.clickedEvent ? props.clickedEvent.title : undefined}
 
         />
@@ -173,6 +174,7 @@ function Popup(props) {
         <input
           type="datetime-local"
           name='startTime'
+          required={true}
           defaultValue={props.clickedEvent ? props.clickedEvent.extendedProps.inputStart : undefined}
         />
 

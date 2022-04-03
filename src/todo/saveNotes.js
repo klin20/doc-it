@@ -32,9 +32,11 @@ export const updateDb = (e, typeOfEvent) => {
   
       // Add some data
       if (typeOfEvent === 'save') {
-        console.log(e)
+        // console.log(e)
         store.put(e);
       } else if (typeOfEvent === 'delete') {
+        
+        // WHEN DELETING SEND IN THE ID (NOT OBJECT)
         store.delete(e)
       }
   

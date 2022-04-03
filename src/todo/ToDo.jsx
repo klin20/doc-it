@@ -42,7 +42,7 @@ function ToDo() {
             const subaru = store.getAll();
 
             subaru.onsuccess = () => {
-                // console.log(subaru.result)
+                console.log(subaru.result)
                 setAllNotes(subaru.result);
             };
         }
@@ -53,6 +53,7 @@ function ToDo() {
         noteID: createEventId(),
         title: undefined,
         color: undefined,
+        order: Date.now(),
         items: []
     }
 
@@ -62,7 +63,6 @@ function ToDo() {
         setAllNotes([temp, ...allNotes])
 
         // add this new note to indexedDB
-        console.log(temp)
         updateDb(temp, 'save')
     }
 

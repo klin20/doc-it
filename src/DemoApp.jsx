@@ -47,6 +47,8 @@ function DemoApp() {
       subaru.onsuccess = () => {
         // console.log(subaru.result)
         setEvents(subaru.result);
+
+        console.log(subaru.result)
       };
     }
   }, []);
