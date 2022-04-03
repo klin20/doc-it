@@ -31,7 +31,7 @@ function ToDo() {
 
     return (
         <div className="todo">
-            <h2>TODO</h2>
+            <h2>TODO1</h2>
             <button 
             onClick={() => {addNote()}} >
                 + Add New Note</button>
