@@ -2,157 +2,232 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import TextareaAutosize from "react-textarea-autosize";
 
-import { createEventId, updateDb } from '../event-utils'
+import { createEventId } from '../event-utils'
+import { updateDb } from './saveNotes'
 
 function Note(props) {
 
-    let itemObject = {
-        itemID: createEventId(),
-        content: undefined,
-        done: 'notDone',
-        color: undefined,
-        order: undefined
-    }
 
-    // ONE LEVEL DEEP
-    const addItem = () => {
+    // NEED DEBOUNCE/EVENT THROTTLING FOR updateContent
+    // DONT WANT TO SAVE TO DB FOR EVERY CHARACTER THE USER INPUTS
+    // SAVE 1 SECOND AFTER THE LAST CHANGE
 
-        // go thru allNotes, search for note with matching nodeID, update that note.items, then update allNotes
-        let updatedNotes = props.allNotes.map((note) => {
+    // https://stackoverflow.com/a/61629055/6030118
+    const [entry, setEntry] = useState(undefined);
 
-            if (note.noteID === props.noteID) {
-                note.items.push(itemObject)
-            }
-            return note
-        })
+    // NEED delayedEntry o/w when removing notes, removed notes dissappear then reappear on current page (gone when refersh)
+    const [delayedEntry, setDelayedEntry] = useState(undefined);
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+            // Send Axios request here
+            setDelayedEntry(entry);
 
-        props.setAllNotes(updatedNotes)
-    }
+
+            entry.target.name === 'title' ?
+                updateTitle(entry) :
+                updateContent(entry)
+
+        }, 600);
+
+        return () => clearTimeout(delayDebounceFn);
+    }, [entry]);
+
 
     const removeNote = () => {
         let updatedNotes = props.allNotes.filter((note) => {
 
             return note.noteID !== props.noteID
         })
+        console.log(updatedNotes)
         props.setAllNotes(updatedNotes)
+        updateDb(props.noteID, 'delete')
     }
+
+
+    const [title, setTitle] = useState(props.noteContent.title)
+    const [items, setItems] = useState(props.noteContent.items)
+
+    // ONE LEVEL DEEP
+    const addItem = () => {
+
+        let newItem = {
+            itemID: createEventId(),
+            content: undefined,
+            done: 'notDone',
+            color: undefined,
+            order: undefined
+        }
+
+        setItems([...items, newItem])
+
+        updateDb({
+            noteID: props.noteContent.noteID,
+            title: title,
+            color: undefined,
+            items: [...items, newItem]
+        }, 'save')
+
+    }
+
 
     const updateTitle = (e) => {
-        let updatedNotes = props.allNotes.map((note) => {
+        setTitle(e.target.value)
 
-            if (note.noteID === props.noteID) {
-                note.title = e.target.value
-            }
-            return note
-        })
-        props.setAllNotes(updatedNotes)
+        updateDb({
+            noteID: props.noteContent.noteID,
+            title: e.target.value,
+            color: undefined,
+            items: items
+        }, 'save')
     }
 
-
-    // TWO LEVEL DEEP
-    const updateContent = (e) => {
-
-        let updatedNotes = props.allNotes.map((note) => {
-
-            if (note.noteID === props.noteID) {
-
-                note.items.map((item) => {
-
-                    if (item.itemID === e.target.id) {
-                        item.content = e.target.value
-                    }
-                })
-            }
-            return note
-        })
-
-        props.setAllNotes(updatedNotes)
-    }
 
     const toggleDone = (e) => {
-        let updatedNotes = props.allNotes.map((note) => {
+        let itemsUpdatedCheckboxes = items.map((item) => {
+            if (item.itemID === e.target.id) {
 
-            if (note.noteID === props.noteID) {
-                note.items.map((item) => {
-                    if (item.itemID === e.target.id) {
-
-                        item.done === 'done' ?
-                            item.done = 'notDone' :
-                            item.done = 'done'
-                    }
-                })
+                item.done === 'done' ?
+                    item.done = 'notDone' :
+                    item.done = 'done'
             }
-            return note
+            return item
         })
-        props.setAllNotes(updatedNotes)
+
+        setItems(itemsUpdatedCheckboxes)
+
+        updateDb({
+            noteID: props.noteContent.noteID,
+            title: e.target.value,
+            color: undefined,
+            items: itemsUpdatedCheckboxes
+        }, 'save')
     }
+
 
     const removeItem = (e) => {
-        // let minusRemovedItem
 
-        let x = props.allNotes.map((note) => {
-
-            // grab the right note based on note ID
-            if (note.noteID === props.noteID) {
-                let minusRemovedItem = note.items.filter((item) => {
-
-                    return (item.itemID !== e.target.id)
-                })
-
-                note.items = minusRemovedItem
-            }
-            return note
+        let itemsMinusRemovedItem = items.filter((item) => {
+            return item.itemID !== e.target.id
         })
-        console.log(x)
-        props.setAllNotes(x)
+
+        console.log(itemsMinusRemovedItem)
+
+        setItems(itemsMinusRemovedItem)
+
+        updateDb({
+            noteID: props.noteContent.noteID,
+            title: e.target.value,
+            color: undefined,
+            items: itemsMinusRemovedItem
+        }, 'save')
     }
+
+
+    // // TWO LEVEL DEEP
+    const updateContent = (e) => {
+
+        console.log('updating content')
+        // console.log(e)
+
+        let itemsWithUpdatedContent = items.map((item) => {
+
+            if(item.itemID === e.target.id){
+                item.content = e.target.value
+            }
+
+            return item
+        })
+
+        console.log(itemsWithUpdatedContent)
+
+        setItems(itemsWithUpdatedContent)
+
+        updateDb({
+            noteID: props.noteContent.noteID,
+            title: title,
+            color: undefined,
+            items: itemsWithUpdatedContent
+        }, 'save')
+    }
+
+
+
+
 
 
 
     return (
         <div className="note">
 
-            <input
-                placeholder={`untitled note ${props.noteID}`}
-                onChange={(e) => { updateTitle(e) }}
-            ></input>
-            <br />
-            <button
-                onClick={(e) => { removeNote(e) }}>
-                remove note
-            </button>
-            <br />
-            <br />
+            <div className='titleAndRemoveButton'>
 
+                <input
+                    defaultValue={title}
+                    name={'title'}
+                    placeholder={'note title here (max: 20)'}
+                    // placeholder={noteObject.noteID}
+                    maxLength={20}
+                    onChange={(e) => { setEntry(e) }}
+                ></input>
+                <button
+                    onClick={(e) => { removeNote(e) }}>
+                    remove note
+                </button>
+            </div>
 
-            {
-                props.noteContent.items.map((item) => {
-                    return (
-                        <div>
+            <ul>
+                {
 
-                            <TextareaAutosize
-                                key={item.itemID}
-                                id={item.itemID}
-                                className={item.done}
-                                defaultValue={item.itemID}
-                                onChange={(e) => updateContent(e)}
-                            />
+                    items.map((item) => {
 
-                            <input
-                                type="checkbox"
-                                id={item.itemID}
-                                onClick={(e) => { toggleDone(e) }}
-                            />
+                        return (
+                            <li >
+                                <input
+                                    type="checkbox"
+                                    id={item.itemID}
 
-                            <button
-                                id={item.itemID}
-                                onClick={(e) => { removeItem(e) }}
-                            >remove</button>
+                                    // remove problem shown to Kelly
+                                    // checked, but remove pass the greenbox to another field, even if that field is not done
 
-                        </div>
-                    )
-                })
-            }
+                                    // current version with IndexedDB, defaultChecked recreates's Kelly problem, but checked doesnt???
+                                    checked={
+                                        item.done === 'done' ?
+                                            true :
+                                            false
+                                    }
+                                    onChange={(e) => { toggleDone(e) }}
+                                />
+
+                                <TextareaAutosize
+                                    key={item.itemID}
+                                    id={item.itemID}
+                                    className={item.done}
+                                    defaultValue={item.content}
+                                    disabled={
+                                        item.done === 'done' ?
+                                            true :
+                                            false
+                                    }
+                                    placeholder={'enter your task here'}
+                                    // onChange={(e) => updateContent(e)}
+                                    onChange={(e) => {
+
+                                        // setEntry(e.target.value)
+                                        setEntry(e)
+                                    }}
+
+                                />
+
+                                <button
+                                    id={item.itemID}
+                                    onClick={(e) => { removeItem(e) }}
+                                >remove</button>
+
+                            </li>
+                        )
+                    })
+                }
+            </ul>
 
             <button
                 onClick={(e) => { addItem(e) }}>

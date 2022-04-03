@@ -93,6 +93,8 @@ function Popup(props) {
 
 
   // HANDLE UPDATE
+  // CREATE A NEW EVENT WITH DATA FROM OLD EVENT
+  // DELETE OLD EVENT
   const handleUpdate = (e) => {
     e.preventDefault()
 
@@ -163,6 +165,7 @@ function Popup(props) {
         <input
           type="text"
           name='title'
+          required={true}
           defaultValue={props.clickedEvent ? props.clickedEvent.title : undefined}
 
         />
@@ -171,6 +174,7 @@ function Popup(props) {
         <input
           type="datetime-local"
           name='startTime'
+          required={true}
           defaultValue={props.clickedEvent ? props.clickedEvent.extendedProps.inputStart : undefined}
         />
 
