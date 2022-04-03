@@ -127,29 +127,27 @@ function Note(props) {
     const updateContent = (e) => {
 
         console.log('updating content')
-        console.log(e)
+        // console.log(e)
 
-        let updatedNotes = items.map((item) => {
+        let itemsWithUpdatedContent = items.map((item) => {
 
-            console.log(item)
+            if(item.itemID === e.target.id){
+                item.content = e.target.value
+            }
+
+            return item
         })
 
-        // let updatedNotes = props.allNotes.map((note) => {
+        console.log(itemsWithUpdatedContent)
 
-        //     if (note.noteID === props.noteID) {
+        setItems(itemsWithUpdatedContent)
 
-        //         note.items.map((item) => {
-
-        //             // Ignore uncaught TypeError: Cannot read properties of undefined (reading 'target')
-        //             if (item.itemID === e.target.id) {
-        //                 item.content = e.target.value
-        //             }
-        //         })
-        //     }
-        //     return note
-        // })
-
-        // props.setAllNotes(updatedNotes)
+        updateDb({
+            noteID: props.noteContent.noteID,
+            title: title,
+            color: undefined,
+            items: itemsWithUpdatedContent
+        }, 'save')
     }
 
 
@@ -205,6 +203,11 @@ function Note(props) {
                                     id={item.itemID}
                                     className={item.done}
                                     defaultValue={item.content}
+                                    disabled={
+                                        item.done === 'done' ?
+                                            true :
+                                            false
+                                    }
                                     placeholder={'enter your task here'}
                                     // onChange={(e) => updateContent(e)}
                                     onChange={(e) => {
