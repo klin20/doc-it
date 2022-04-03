@@ -16,6 +16,12 @@ function ToDo() {
         setAllNotes(sampleEvents)
     } , [])
 
+
+    useEffect(() => {
+        console.log('allNotes has changed')
+    } , [allNotes])
+
+
     
     const noteObject = {
         noteID: createEventId(),

@@ -93,6 +93,8 @@ function Popup(props) {
 
 
   // HANDLE UPDATE
+  // CREATE A NEW EVENT WITH DATA FROM OLD EVENT
+  // DELETE OLD EVENT
   const handleUpdate = (e) => {
     e.preventDefault()
 

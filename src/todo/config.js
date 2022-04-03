@@ -36,7 +36,7 @@ export let sampleEvents = [
             },
             {
                 "itemID": "_kn8k4n5fs",
-                "content": "go home",
+                "content": "go home go home go home go home go home go home go home go home go home go home go home go home go home go home go home go home go home go home go home go home go home go home go home go home go home go home go home go home go home go home ",
                 "done": "notDone"
             }
         ]

@@ -2,7 +2,8 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import TextareaAutosize from "react-textarea-autosize";
 
-import { createEventId, updateDb } from '../event-utils'
+import { createEventId } from '../event-utils'
+import { updateDb } from './saveNotes'
 
 function Note(props) {
 
@@ -49,6 +50,26 @@ function Note(props) {
     }
 
 
+    // NEED DEBOUNCE/EVENT THROTTLING FOR updateContent
+    // DONT WANT TO SAVE TO DB FOR EVERY CHARACTER THE USER INPUTS
+    // SAVE 1 SECOND AFTER THE LAST CHANGE
+
+    // https://stackoverflow.com/a/61629055/6030118
+    const [entry, setEntry] = useState(undefined);
+
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+            // console.log(entry);
+            // Send Axios request here
+            // setDelayedEntry(entry);
+            updateContent(entry)
+            
+        }, 2000);
+
+        return () => clearTimeout(delayDebounceFn);
+    }, [entry]);
+
+
     // TWO LEVEL DEEP
     const updateContent = (e) => {
 
@@ -58,6 +79,7 @@ function Note(props) {
 
                 note.items.map((item) => {
 
+                    // Ignore uncaught TypeError: Cannot read properties of undefined (reading 'target')
                     if (item.itemID === e.target.id) {
                         item.content = e.target.value
                     }
@@ -66,7 +88,10 @@ function Note(props) {
             return note
         })
 
+        console.log('trying to save updated allNotes')
         props.setAllNotes(updatedNotes)
+        console.log(updatedNotes)
+
     }
 
     const toggleDone = (e) => {
@@ -115,7 +140,7 @@ function Note(props) {
             <div className='titleAndRemoveButton'>
 
                 <input
-                    placeholder={`untitled note`}
+                    defaultValue={props.noteContent.title}
                     onChange={(e) => { updateTitle(e) }}
                 ></input>
                 <button
@@ -127,6 +152,7 @@ function Note(props) {
             <ul>
                 {
                     props.noteContent.items.map((item) => {
+
                         return (
                             <li >
                                 <input
@@ -135,10 +161,10 @@ function Note(props) {
 
                                     // remove problem shown to Kelly
                                     // checked, but remove pass the greenbox to another field, even if that field is not done
-                                    checked={
+                                    defaultChecked={
                                         item.done === 'done' ?
-                                        true :
-                                        false
+                                            true :
+                                            false
                                     }
                                     onClick={(e) => { toggleDone(e) }}
                                 />
@@ -147,8 +173,15 @@ function Note(props) {
                                     key={item.itemID}
                                     id={item.itemID}
                                     className={item.done}
-                                    placeholder='task'
-                                    onChange={(e) => updateContent(e)}
+                                    defaultValue={item.content}
+                                    placeholder={'enter your task here'}
+                                    // onChange={(e) => updateContent(e)}
+                                    onChange={(e) => {
+
+                                        // setEntry(e.target.value)
+                                        setEntry(e)
+                                    }}
+
                                 />
 
                                 <button
