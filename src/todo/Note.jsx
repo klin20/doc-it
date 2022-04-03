@@ -1,5 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import TextareaAutosize from "react-textarea-autosize";
 
 import { createEventId } from '../event-utils'
@@ -131,7 +132,7 @@ function Note(props) {
 
         let itemsWithUpdatedContent = items.map((item) => {
 
-            if(item.itemID === e.target.id){
+            if (item.itemID === e.target.id) {
                 item.content = e.target.value
             }
 
@@ -150,6 +151,17 @@ function Note(props) {
         }, 'save')
     }
 
+    const reorder = (list, startIndex, endIndex) => {
+        const result = Array.from(list);
+        const [removed] = result.splice(startIndex, 1);
+        result.splice(endIndex, 0, removed);
+
+        return result;
+    }
+
+    const onDragEnd = result => {
+        setItems(reorder(items, result.source.index, result.destination.index));
+    }
 
 
 
@@ -174,60 +186,78 @@ function Note(props) {
                     remove note
                 </button>
             </div>
+            <DragDropContext onDragEnd={onDragEnd}>
+                <Droppable droppableId="taskList">
+                    {(provided) => (
+                        <ul ref={provided.innerRef} {...provided.droppableProps} >
+                            {
 
-            <ul>
-                {
+                                items.map((item, index) => {
 
-                    items.map((item) => {
+                                    return (
+                                        <Draggable
+                                            key={item.itemID}
+                                            draggableId={item.itemID}
+                                            index={index}
+                                        >
+                                            {(provided) => (
+                                                <li
+                                                    ref={provided.innerRef}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}>
+                                                    <input
+                                                        type="checkbox"
+                                                        id={item.itemID}
 
-                        return (
-                            <li >
-                                <input
-                                    type="checkbox"
-                                    id={item.itemID}
+                                                        // remove problem shown to Kelly
+                                                        // checked, but remove pass the greenbox to another field, even if that field is not done
 
-                                    // remove problem shown to Kelly
-                                    // checked, but remove pass the greenbox to another field, even if that field is not done
+                                                        // current version with IndexedDB, defaultChecked recreates's Kelly problem, but checked doesnt???
+                                                        checked={
+                                                            item.done === 'done' ?
+                                                                true :
+                                                                false
+                                                        }
+                                                        onChange={(e) => { toggleDone(e) }}
+                                                    />
 
-                                    // current version with IndexedDB, defaultChecked recreates's Kelly problem, but checked doesnt???
-                                    checked={
-                                        item.done === 'done' ?
-                                            true :
-                                            false
-                                    }
-                                    onChange={(e) => { toggleDone(e) }}
-                                />
+                                                    <TextareaAutosize
+                                                        key={item.itemID}
+                                                        id={item.itemID}
+                                                        className={item.done}
+                                                        defaultValue={item.content}
+                                                        disabled={
+                                                            item.done === 'done' ?
+                                                                true :
+                                                                false
+                                                        }
+                                                        placeholder={'enter your task here'}
+                                                        // onChange={(e) => updateContent(e)}
+                                                        onChange={(e) => {
 
-                                <TextareaAutosize
-                                    key={item.itemID}
-                                    id={item.itemID}
-                                    className={item.done}
-                                    defaultValue={item.content}
-                                    disabled={
-                                        item.done === 'done' ?
-                                            true :
-                                            false
-                                    }
-                                    placeholder={'enter your task here'}
-                                    // onChange={(e) => updateContent(e)}
-                                    onChange={(e) => {
+                                                            // setEntry(e.target.value)
+                                                            setEntry(e)
+                                                        }}
 
-                                        // setEntry(e.target.value)
-                                        setEntry(e)
-                                    }}
+                                                    />
 
-                                />
+                                                    <button
+                                                        id={item.itemID}
+                                                        onClick={(e) => { removeItem(e) }}
+                                                    >remove</button>
 
-                                <button
-                                    id={item.itemID}
-                                    onClick={(e) => { removeItem(e) }}
-                                >remove</button>
-
-                            </li>
-                        )
-                    })
-                }
-            </ul>
+                                                </li>
+                                                
+                                            )}
+                                        </Draggable>
+                                    )
+                                })
+                            }
+                            {provided.placeholder}
+                        </ul>
+                    )}
+                </Droppable>
+            </DragDropContext>
 
             <button
                 onClick={(e) => { addItem(e) }}>
