@@ -160,7 +160,17 @@ function Note(props) {
     }
 
     const onDragEnd = result => {
+        console.log(result);
         setItems(reorder(items, result.source.index, result.destination.index));
+
+        let x = reorder(items, result.source.index, result.destination.index)
+
+        updateDb({
+            noteID: props.noteContent.noteID,
+            title: title,
+            color: undefined,
+            items: x
+        }, 'save')
     }
 
 
@@ -168,104 +178,105 @@ function Note(props) {
 
 
 
-    return (
-        <div className="note">
 
-            <div className='titleAndRemoveButton'>
+return (
+    <div className="note">
 
-                <input
-                    defaultValue={title}
-                    name={'title'}
-                    placeholder={'note title here (max: 20)'}
-                    // placeholder={noteObject.noteID}
-                    maxLength={20}
-                    onChange={(e) => { setEntry(e) }}
-                ></input>
-                <button
-                    onClick={(e) => { removeNote(e) }}>
-                    remove note
-                </button>
-            </div>
-            <DragDropContext onDragEnd={onDragEnd}>
-                <Droppable droppableId="taskList">
-                    {(provided) => (
-                        <ul ref={provided.innerRef} {...provided.droppableProps} >
-                            {
+        <div className='titleAndRemoveButton'>
 
-                                items.map((item, index) => {
-
-                                    return (
-                                        <Draggable
-                                            key={item.itemID}
-                                            draggableId={item.itemID}
-                                            index={index}
-                                        >
-                                            {(provided) => (
-                                                <li
-                                                    ref={provided.innerRef}
-                                                    {...provided.draggableProps}
-                                                    {...provided.dragHandleProps}>
-                                                    <input
-                                                        type="checkbox"
-                                                        id={item.itemID}
-
-                                                        // remove problem shown to Kelly
-                                                        // checked, but remove pass the greenbox to another field, even if that field is not done
-
-                                                        // current version with IndexedDB, defaultChecked recreates's Kelly problem, but checked doesnt???
-                                                        checked={
-                                                            item.done === 'done' ?
-                                                                true :
-                                                                false
-                                                        }
-                                                        onChange={(e) => { toggleDone(e) }}
-                                                    />
-
-                                                    <TextareaAutosize
-                                                        key={item.itemID}
-                                                        id={item.itemID}
-                                                        className={item.done}
-                                                        defaultValue={item.content}
-                                                        disabled={
-                                                            item.done === 'done' ?
-                                                                true :
-                                                                false
-                                                        }
-                                                        placeholder={'enter your task here'}
-                                                        // onChange={(e) => updateContent(e)}
-                                                        onChange={(e) => {
-
-                                                            // setEntry(e.target.value)
-                                                            setEntry(e)
-                                                        }}
-
-                                                    />
-
-                                                    <button
-                                                        id={item.itemID}
-                                                        onClick={(e) => { removeItem(e) }}
-                                                    >remove</button>
-
-                                                </li>
-                                                
-                                            )}
-                                        </Draggable>
-                                    )
-                                })
-                            }
-                            {provided.placeholder}
-                        </ul>
-                    )}
-                </Droppable>
-            </DragDropContext>
-
+            <input
+                defaultValue={title}
+                name={'title'}
+                placeholder={'note title here (max: 20)'}
+                // placeholder={noteObject.noteID}
+                maxLength={20}
+                onChange={(e) => { setEntry(e) }}
+            ></input>
             <button
-                onClick={(e) => { addItem(e) }}>
-                + add new task
+                onClick={(e) => { removeNote(e) }}>
+                remove note
             </button>
-
         </div>
-    )
+        <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable droppableId="taskList">
+                {(provided) => (
+                    <ul ref={provided.innerRef} {...provided.droppableProps} >
+                        {
+
+                            items.map((item, index) => {
+
+                                return (
+                                    <Draggable
+                                        key={item.itemID}
+                                        draggableId={item.itemID}
+                                        index={index}
+                                    >
+                                        {(provided) => (
+                                            <li
+                                                ref={provided.innerRef}
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}>
+                                                <input
+                                                    type="checkbox"
+                                                    id={item.itemID}
+
+                                                    // remove problem shown to Kelly
+                                                    // checked, but remove pass the greenbox to another field, even if that field is not done
+
+                                                    // current version with IndexedDB, defaultChecked recreates's Kelly problem, but checked doesnt???
+                                                    checked={
+                                                        item.done === 'done' ?
+                                                            true :
+                                                            false
+                                                    }
+                                                    onChange={(e) => { toggleDone(e) }}
+                                                />
+
+                                                <TextareaAutosize
+                                                    key={item.itemID}
+                                                    id={item.itemID}
+                                                    className={item.done}
+                                                    defaultValue={item.content}
+                                                    disabled={
+                                                        item.done === 'done' ?
+                                                            true :
+                                                            false
+                                                    }
+                                                    placeholder={'enter your task here'}
+                                                    // onChange={(e) => updateContent(e)}
+                                                    onChange={(e) => {
+
+                                                        // setEntry(e.target.value)
+                                                        setEntry(e)
+                                                    }}
+
+                                                />
+
+                                                <button
+                                                    id={item.itemID}
+                                                    onClick={(e) => { removeItem(e) }}
+                                                >remove</button>
+
+                                            </li>
+
+                                        )}
+                                    </Draggable>
+                                )
+                            })
+                        }
+                        {provided.placeholder}
+                    </ul>
+                )}
+            </Droppable>
+        </DragDropContext>
+
+        <button
+            onClick={(e) => { addItem(e) }}>
+            + add new task
+        </button>
+
+    </div>
+)
 }
 
 export default Note;
