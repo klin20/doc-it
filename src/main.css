@@ -371,3 +371,7 @@ h2.fc-toolbar-title {
   text-decoration: line-through;
   color: grey;
 }
+
+li {
+  padding: 25px;
+}
