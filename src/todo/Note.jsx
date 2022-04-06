@@ -184,17 +184,17 @@ return (
 
         <div className='titleAndRemoveButton'>
 
-            <input
+            <input class ="td-title"
                 defaultValue={title}
                 name={'title'}
-                placeholder={'note title here (max: 20)'}
+                placeholder={'Add title'}
                 // placeholder={noteObject.noteID}
                 maxLength={20}
                 onChange={(e) => { setEntry(e) }}
             ></input>
-            <button
+            <button class="dlt-todo"
                 onClick={(e) => { removeNote(e) }}>
-                remove note
+                ✖
             </button>
         </div>
         <DragDropContext onDragEnd={onDragEnd}>
@@ -242,7 +242,7 @@ return (
                                                             true :
                                                             false
                                                     }
-                                                    placeholder={'enter your task here'}
+                                                    placeholder={'click to add task'}
                                                     // onChange={(e) => updateContent(e)}
                                                     onChange={(e) => {
 
@@ -252,10 +252,10 @@ return (
 
                                                 />
 
-                                                <button
+                                                <button class="dlt"
                                                     id={item.itemID}
                                                     onClick={(e) => { removeItem(e) }}
-                                                >remove</button>
+                                                >✖</button>
 
                                             </li>
 
@@ -270,7 +270,7 @@ return (
             </Droppable>
         </DragDropContext>
 
-        <button
+        <button class="add-task"
             onClick={(e) => { addItem(e) }}>
             + add new task
         </button>
