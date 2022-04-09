@@ -2,12 +2,12 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import TextareaAutosize from "react-textarea-autosize";
+import Confetti from 'react-confetti';
 
 import { createEventId } from '../event-utils'
 import { updateDb } from './saveNotes'
 
 function Note(props) {
-
 
     // NEED DEBOUNCE/EVENT THROTTLING FOR updateContent
     // DONT WANT TO SAVE TO DB FOR EVERY CHARACTER THE USER INPUTS
@@ -82,6 +82,7 @@ function Note(props) {
         }, 'save')
     }
 
+    const [rainConfetti, setRainConfetti] = useState(false);
 
     const toggleDone = (e) => {
         let itemsUpdatedCheckboxes = items.map((item) => {
@@ -89,10 +90,12 @@ function Note(props) {
 
                 item.done === 'done' ?
                     item.done = 'notDone' :
-                    item.done = 'done'
+                    (item.done = 'done', showConfetti())
             }
+
             return item
         })
+
 
         setItems(itemsUpdatedCheckboxes)
 
@@ -104,6 +107,10 @@ function Note(props) {
         }, 'save')
     }
 
+    const showConfetti = () => {
+        setRainConfetti(true);
+        setTimeout(() => { setRainConfetti(false) } , 4000);
+    }
 
     const removeItem = (e) => {
 
@@ -180,8 +187,10 @@ function Note(props) {
 
 
 return (
-    <div className="note">
 
+    <div className="note">
+        {rainConfetti ? <Confetti 
+                    tweenDuration={1000} recycle={false} numberOfPieces={300}/> : null}
         <div className='titleAndRemoveButton'>
 
             <input class ="td-title"

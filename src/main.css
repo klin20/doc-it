@@ -300,7 +300,7 @@ b {
 	font-family: 'Open Sans', sans-serif;
 	font-weight: 400;
 	max-height: 700px;
-	overflow-y: scroll;
+/*	overflow-y: scroll;*/
 	margin-bottom: 30px;
 	/* height: 100%; */
 }
@@ -338,6 +338,7 @@ form {
 	/* margin: 3em; */
 	margin-left: 40px;
 	min-width: 340px;
+	max-width: 95%;
 	max-height: 700px;
 	margin-right: 40px;
 	margin-bottom: 30px;
@@ -627,3 +628,42 @@ h1{
 .dlt-evt:hover{
 	text-decoration: underline;
 }
+
+  .fc-media-screen .fc-timegrid-now-indicator-container {
+    position: unset;
+  }
+
+  .fc .fc-timegrid-now-indicator-line {
+    border-bottom-width: 1px; 
+    border-top-width: 1px;
+    border-color: red;
+    background-color: red;
+  }
+
+  // Day view
+  .fc-resourceTimeGridDay-view  .fc-timegrid-now-indicator-arrow {
+    position: absolute;
+    border: none;
+    left: unset;
+    right: -6px;
+    width: 12px;
+    height: 12px;
+    background-color: red;
+    border-radius: 50%;
+  }
+   
+  // Week view
+  .fc-timeGridWeek-view .fc-timegrid-now-indicator-arrow {
+    display: none;
+  }
+
+  .fc-timeGridWeek-view .fc-timegrid-now-indicator-line::before {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius :50%;
+  }

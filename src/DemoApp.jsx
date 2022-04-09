@@ -4,6 +4,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import Popup from './Popup'
+import Confetti from 'react-confetti';
 
 import { useState, useEffect } from 'react'
 import ToDo from './todo/ToDo'
