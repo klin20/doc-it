@@ -4,7 +4,11 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import Popup from './Popup'
+
+import PopupWindow from './PopupWindow'
+
 import Confetti from 'react-confetti';
+
 
 import { useState, useEffect } from 'react'
 import ToDo from './todo/ToDo'
@@ -67,6 +71,10 @@ function DemoApp() {
   // TIME INPUT FORMAT IN FORM
   // 2022-03-11T17:50
 
+  const [popupcontent, setPopupcontent] = useState(''); 
+  const [isOpen, setIsOpen] = useState(false);
+  // For Popupwindow component
+
   return (
     <>
       {popupVisible ?
@@ -76,6 +84,9 @@ function DemoApp() {
           setEvents={setEvents}
           clickedEvent={clickedEvent}
           setClickedEvent={setClickedEvent}
+         
+          setPopupcontent={setPopupcontent}
+          setIsOpen={setIsOpen}
         />
         :
         null
@@ -162,6 +173,12 @@ function DemoApp() {
 
         }
 
+        { isOpen ?
+          <PopupWindow 
+          popupcontent={popupcontent}
+          setIsOpen={setIsOpen}
+          /> : null
+        }
       </div>
     </>
   )

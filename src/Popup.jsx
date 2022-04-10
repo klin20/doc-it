@@ -5,6 +5,7 @@ import { createEventId, updateDb } from './event-utils'
 
 
 function Popup(props) {
+  const {setPopupcontent, setIsOpen} =  props
   // props:
   // closePopup={() => {setPopupVisible(false)}}
   // events={events}
@@ -144,7 +145,10 @@ function Popup(props) {
     }
   }
 
-
+  const popupWindow = (content) => {
+    setPopupcontent(content)
+    setIsOpen(true)
+  }
 
   return (
     <div className='popup'>
@@ -242,22 +246,24 @@ function Popup(props) {
         {
           props.clickedEvent ?
             <>
+
               <div class="upd-dlt">
                 <button class="dlt-evt"
-                  onClick={(e) => { handleDelete(e) }} >
+                  onClick={ (e) => { handleDelete(e); popupWindow('deleted')}}>
                   Delete Event
                 </button>
 
                 <button class="upd"
-                  onClick={(e) => { handleUpdate(e) }}>
+                  onClick={(e) => { handleUpdate(e);popupWindow('updated') }}>
                   Update Event
                 </button>
               </div>
+
             </>
             :
             <button class="new-event"
               type='submit'
-              onClick={(e) => { handleSubmit(e) }}>Create New Event
+              onClick={(e) => { handleSubmit(e);popupWindow('created')  }}>Create New Event
             </button>
         }
       </form>

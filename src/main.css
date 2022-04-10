@@ -263,11 +263,17 @@ b {
 }
 
 .demo-app {
+
 	display: flex;
 	min-height: 100%;
 	font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
 	font-size: 14px;
 	color: #263238;
+  
+/* FROM HUGH'S LATEST COMMIT   */
+/* Purpose: to keep Popup window in center of screen by targeting parent element; change if another method come up   */
+  position:relative;
+
 }
 
 /*.demo-app-sidebar {
@@ -553,6 +559,7 @@ h1{
 }
 
 
+
 .fc .fc-dayGridMonth-button:hover{
 	background-color: #7CA5E7;
 }
@@ -667,3 +674,36 @@ h1{
     background-color: red;
     border-radius :50%;
   }
+
+
+
+/* ==================HUGH'S POPUP STYLING================================ */
+/*  File:  PopupWindow.jsx */
+.popupwindow-container {
+  width: 200px;
+  height: 100px;
+  position: absolute;
+  z-index: 10;
+  display:flex;
+  border: 1px black solid;
+  border-radius: 5px;
+  background-color: wheat;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  top: calc(50vh - 50px);
+  left: calc(50vw - 100px);
+
+}
+
+.popupwindow-box {
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
