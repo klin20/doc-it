@@ -4,13 +4,16 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import Popup from './Popup'
+
 import PopupWindow from './PopupWindow'
+
+import Confetti from 'react-confetti';
+
 
 import { useState, useEffect } from 'react'
 import ToDo from './todo/ToDo'
 
 function DemoApp() {
-
 
   // get events from IndexedDB and pass it onto component
   const [events, setEvents] = useState([])
@@ -90,12 +93,17 @@ function DemoApp() {
       }
 
       <div className='control'>
-        <button
-          onClick={() => { setCalendarVisible(!calendarVisible) }}
-        >Toggle Calendar</button>
-        <button
-          onClick={() => { setTodoVisible(!todoVisible) }}
-        >Toggle To-Do List</button>
+        <div class="header">
+          <h1>Welcome !</h1>
+        </div>
+        <div class="toggle">
+          <button
+            onClick={() => { setCalendarVisible(!calendarVisible) }}
+          >Toggle Calendar</button>
+          <button
+            onClick={() => { setTodoVisible(!todoVisible) }}
+          >Toggle To-Do List</button>
+        </div>
       </div>
 
       <div className='demo-app'>
@@ -126,7 +134,7 @@ function DemoApp() {
                 //===============================================
                 customButtons={{
                   myCustomButton: {
-                    text: 'new event',
+                    text: 'Create Event',
                     click: (arg) => {
 
                       setPopupVisible(true)

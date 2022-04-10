@@ -68,10 +68,10 @@ function ToDo() {
 
     return (
         <div className="todo">
-            <h2>TODO</h2>
-            <button
+            <h2 class="td-header">To-do Lists</h2>
+            <button class="add-list"
                 onClick={() => { addNote() }} >
-                + Add New Note</button>
+                + Add List</button>
 
             {
 
