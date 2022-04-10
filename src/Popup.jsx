@@ -153,71 +153,85 @@ function Popup(props) {
       // onSubmit={(e) => handleSubmit(e)}
       >
 
-        <button onClick={() => {
+        <button class="cancel" onClick={() => {
           props.closePopup()
           props.setClickedEvent(null)
-        }}>Close</button>
-
-        <br />
-        <br />
+        }}>✖</button>
 
         <label htmlFor="">Event Title</label>
         <input
           type="text"
           name='title'
+          placeholder="Add title"
           required={true}
           defaultValue={props.clickedEvent ? props.clickedEvent.title : undefined}
 
         />
 
-        <label htmlFor="">Start Time and Date</label>
-        <input
-          type="datetime-local"
-          name='startTime'
-          required={true}
-          defaultValue={props.clickedEvent ? props.clickedEvent.extendedProps.inputStart : undefined}
-        />
+        <br/>
 
-        <label htmlFor="">All Day</label>
-        <input
-          type="checkbox"
-          name="allDay" id=""
-          // MAYBE NOT NEEDED
-          // onClick={(e) => { setAllDay(!allDay) }}
-          defaultChecked={props.clickedEvent ? props.clickedEvent.allDay : undefined}
-        />
+        <div>
+          <div class="start">
+            <label htmlFor="">Start Time and Date</label>
+            <input
+              type="datetime-local"
+              name='startTime'
+              required={true}
+              defaultValue={props.clickedEvent ? props.clickedEvent.extendedProps.inputStart : undefined}
+            />
+          </div>
 
-        <label htmlFor="">End Time and Date</label>
-        <input
-          type="datetime-local"
-          name='endTime'
+          <div class="end">
+            <label htmlFor="">End Time and Date</label>
+            <input
+              type="datetime-local"
+              name='endTime'
 
-          // MAYBE NOT NEEDED
-          // disabled={allDay}
+              // MAYBE NOT NEEDED
+              // disabled={allDay}
 
-          defaultValue={props.clickedEvent ? props.clickedEvent.extendedProps.inputEnd : undefined}
+              defaultValue={props.clickedEvent ? props.clickedEvent.extendedProps.inputEnd : undefined}
 
-          // auto select one hour after start time
-          // onFocus={(e) => {
-          //   e.target.value = oneHourAfter(e)
-          // }}
-        />
+              // auto select one hour after start time
+              // onFocus={(e) => {
+              //   e.target.value = oneHourAfter(e)
+              // }}
+            />
+          </div>
+
+          <br/>
+
+          <div>
+            <input
+              type="checkbox"
+              name="allDay" id="allDay"
+              // MAYBE NOT NEEDED
+              // onClick={(e) => { setAllDay(!allDay) }}
+              defaultChecked={props.clickedEvent ? props.clickedEvent.allDay : undefined}
+            />
+            <label for="allDay">All Day</label>
+          </div>
+        </div>
+
+        <br/>
 
         <label htmlFor="">Links</label>
         <textarea
           name="links"
           id=""
-          cols="30" rows="3"
+          rows="3"
           defaultValue={props.clickedEvent ? props.clickedEvent.extendedProps.links : undefined}
 
 
         ></textarea>
 
+        <br/>
+
         <label htmlFor="">Description</label>
         <textarea
           name="description"
           id=""
-          cols="30" rows="5"
+          rows="3"
           defaultValue={props.clickedEvent ? props.clickedEvent.extendedProps.description : undefined}
 
         ></textarea>
@@ -228,18 +242,20 @@ function Popup(props) {
         {
           props.clickedEvent ?
             <>
-              <button
-                onClick={(e) => { handleDelete(e) }} >
-                Delete Event
-              </button>
+              <div class="upd-dlt">
+                <button class="dlt-evt"
+                  onClick={(e) => { handleDelete(e) }} >
+                  Delete Event
+                </button>
 
-              <button
-                onClick={(e) => { handleUpdate(e) }}>
-                Update Event
-              </button>
+                <button class="upd"
+                  onClick={(e) => { handleUpdate(e) }}>
+                  Update Event
+                </button>
+              </div>
             </>
             :
-            <button
+            <button class="new-event"
               type='submit'
               onClick={(e) => { handleSubmit(e) }}>Create New Event
             </button>
