@@ -62,7 +62,7 @@ function DemoApp() {
   const [clickedEvent, setClickedEvent] = useState(null)
 
   // CHANGE BACK WHEN DONE WITH TODO DB
-  const [calendarVisible, setCalendarVisible] = useState(false)
+  const [calendarVisible, setCalendarVisible] = useState(true)
   const [todoVisible, setTodoVisible] = useState(true)
 
   // TIME FORMAT FROM SELECTING EVENT
