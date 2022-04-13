@@ -212,17 +212,27 @@ return (
                 <div className='colorSwitchOptions'>
                     <button
                         className="colorOptions colorOptionOne"
-                        onClick= {()=>{colorButton('red')}}
+                        onClick= {()=>{colorButton('#FFADAE')}}
                     >
                     </button>
                     <button
                         className="colorOptions colorOptionTwo"
-                        onClick= {()=>{colorButton('yellow')}}
+                        onClick= {()=>{colorButton('#FFF0A0')}}
                     >
                     </button>
                     <button
                         className="colorOptions colorOptionThree"
-                        onClick= {()=>{colorButton('#82B2FF')}}
+                        onClick= {()=>{colorButton('#93E396')}}
+                    >
+                    </button>
+                    <button
+                        className="colorOptions colorOptionFour"
+                        onClick= {()=>{colorButton('#85B6FF')}}
+                    >
+                    </button>
+                    <button
+                        className="colorOptions colorOptionFive"
+                        onClick= {()=>{colorButton('#D5B5FF')}}
                     >
                     </button>
                 </div>

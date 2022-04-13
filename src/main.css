@@ -369,6 +369,7 @@ form {
 .colorSwitchOptions {
 	position:absolute;
 	display: none;
+	left: -50px;
 }
 
 .colorSwitchContainer:hover .colorSwitchOptions {
@@ -383,15 +384,23 @@ form {
 }
 
 .colorOptionOne{
-	background-color: red;
+	background-color: #FFADAE;
 }
 
 .colorOptionTwo {
-	background-color: yellow;
+	background-color: #FFF0A0;
 }
 
 .colorOptionThree {
-	background-color: #82B2FF;
+	background-color: #93E396;
+}
+
+.colorOptionFour {
+	background-color: #85B6FF;
+}
+
+.colorOptionFive {
+	background-color: #D5B5FF;
 }
 
 .yellow
