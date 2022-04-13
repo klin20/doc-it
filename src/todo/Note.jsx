@@ -180,20 +180,24 @@ function Note(props) {
         }, 'save')
     }
 
+    const colorButton = (color) => {
+        const targetTheme = document.getElementsByClassName(`note${props.noteID}`);
+        for (let i = 0; i < targetTheme.length; i++) {
+            targetTheme[i].style.border =`${color} 2px solid`;
+            targetTheme[i].style.borderTop =`40px ${color} solid`;
+        }
 
-
-
-
-
+        console.log(targetTheme)
+    }
 
 return (
 
-    <div className="note">
+    <div className={"note note"+ props.noteID}>
         {rainConfetti ? <Confetti 
                     tweenDuration={1000} recycle={false} numberOfPieces={300}/> : null}
-        <div className='titleAndRemoveButton'>
+        <div className="titleAndRemoveButton">
 
-            <input class ="td-title"
+            <input className= "td-title"
                 defaultValue={title}
                 name={'title'}
                 placeholder={'Add title'}
@@ -201,6 +205,28 @@ return (
                 maxLength={20}
                 onChange={(e) => { setEntry(e) }}
             ></input>
+            <div className='colorSwitchContainer'>
+                <p>
+                    color
+                </p>
+                <div className='colorSwitchOptions'>
+                    <button
+                        className="colorOptions colorOptionOne"
+                        onClick= {()=>{colorButton('red')}}
+                    >
+                    </button>
+                    <button
+                        className="colorOptions colorOptionTwo"
+                        onClick= {()=>{colorButton('yellow')}}
+                    >
+                    </button>
+                    <button
+                        className="colorOptions colorOptionThree"
+                        onClick= {()=>{colorButton('#82B2FF')}}
+                    >
+                    </button>
+                </div>
+           </div>
             <button class="dlt-todo"
                 onClick={(e) => { removeNote(e) }}>
                 ✖

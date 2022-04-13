@@ -362,6 +362,40 @@ form {
 	font-weight: 400;
 }
 
+.colorSwitchContainer {
+	position:relative;
+}
+
+.colorSwitchOptions {
+	position:absolute;
+	display: none;
+}
+
+.colorSwitchContainer:hover .colorSwitchOptions {
+	display:flex;
+}
+
+.colorOptions {
+	height:25px;
+	width:25px;
+	padding: 0;
+	border-radius: 0;
+}
+
+.colorOptionOne{
+	background-color: red;
+}
+
+.colorOptionTwo {
+	background-color: yellow;
+}
+
+.colorOptionThree {
+	background-color: #82B2FF;
+}
+
+.yellow
+
 ul {
 	margin: 0;
 	padding: 0;
