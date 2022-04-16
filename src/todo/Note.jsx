@@ -207,7 +207,7 @@ return (
             ></input>
             <div className='colorSwitchContainer'>
                 <p>
-                    color
+                    •••
                 </p>
                 <div className='colorSwitchOptions'>
                     <button
@@ -300,7 +300,7 @@ return (
                                                 <button class="dlt"
                                                     id={item.itemID}
                                                     onClick={(e) => { removeItem(e) }}
-                                                >✖</button>
+                                                >🗑</button>
 
                                             </li>
 

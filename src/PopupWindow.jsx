@@ -10,7 +10,7 @@ const PopupWindow = props => {
     return (
     <div className="popupwindow-container">
       <div className="popupwindow-box">
-        <p>The event is {popupcontent}!</p>
+        <p>Event {popupcontent}! 🎉</p>
         <button className="popupwindow-closeButton" onClick={closePopup}>OK!</button>
       </div>
     </div>
