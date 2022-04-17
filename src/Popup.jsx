@@ -157,10 +157,13 @@ function Popup(props) {
       // onSubmit={(e) => handleSubmit(e)}
       >
 
-        <button class="cancel" onClick={() => {
-          props.closePopup()
-          props.setClickedEvent(null)
-        }}>✖</button>
+        <div className="modalHeader">
+          <h2 className="eventHeader">New Event</h2>
+          <button className="cancel" onClick={() => {
+            props.closePopup()
+            props.setClickedEvent(null)
+          }}>✖</button>
+        </div>
 
         <label htmlFor="">Event Title</label>
         <input
@@ -175,7 +178,7 @@ function Popup(props) {
         <br/>
 
         <div>
-          <div class="start">
+          <div className="start">
             <label htmlFor="">Start Time and Date</label>
             <input
               type="datetime-local"
@@ -185,7 +188,7 @@ function Popup(props) {
             />
           </div>
 
-          <div class="end">
+          <div className="end">
             <label htmlFor="">End Time and Date</label>
             <input
               type="datetime-local"
@@ -247,13 +250,13 @@ function Popup(props) {
           props.clickedEvent ?
             <>
 
-              <div class="upd-dlt">
+              <div className="upd-dlt">
                 <button class="dlt-evt"
                   onClick={ (e) => { handleDelete(e); popupWindow('deleted')}}>
                   Delete Event
                 </button>
 
-                <button class="upd"
+                <button className="upd"
                   onClick={(e) => { handleUpdate(e);popupWindow('updated') }}>
                   Update Event
                 </button>
@@ -261,7 +264,7 @@ function Popup(props) {
 
             </>
             :
-            <button class="new-event"
+            <button className="new-event"
               type='submit'
               onClick={(e) => { handleSubmit(e);popupWindow('created')  }}>Create New Event
             </button>

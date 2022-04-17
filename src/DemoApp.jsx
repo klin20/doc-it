@@ -93,16 +93,21 @@ function DemoApp() {
       }
 
       <div className='control'>
-        <div class="header">
-          <h1>Welcome !</h1>
+        <div className="logo">
+          <img src="src/logo.png"/>
         </div>
-        <div class="toggle">
-          <button
-            onClick={() => { setCalendarVisible(!calendarVisible) }}
-          >Toggle Calendar</button>
-          <button
-            onClick={() => { setTodoVisible(!todoVisible) }}
-          >Toggle To-Do List</button>
+        <div className="header">
+          <div>
+            <h1>Welcome !</h1>
+          </div>
+          <div className="toggle">
+            <button
+              onClick={() => { setCalendarVisible(!calendarVisible) }}
+            >Toggle Calendar</button>
+            <button
+              onClick={() => { setTodoVisible(!todoVisible) }}
+            >Toggle To-Do List</button>
+          </div>
         </div>
       </div>
 
