@@ -52,7 +52,7 @@ function ToDo() {
     const noteObject = {
         noteID: createEventId(),
         title: undefined,
-        color: undefined,
+        color: '#FFADAE',
         order: Date.now(),
         items: []
     }

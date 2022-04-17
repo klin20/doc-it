@@ -352,8 +352,11 @@ form {
 }
 
 .note {
-	border: #82B2FF 2px solid;
-	border-top: 40px #82B2FF solid;
+	border: 2px solid;
+	border-top: 40px solid;
+	/* border color makes controlling thin/thick top border color easier */
+	/* easier to target by react */
+	border-color: #82B2FF ;
 	margin: 10px;
 	min-width: 300px;
 	max-width: 325px;
