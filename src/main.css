@@ -696,7 +696,7 @@ h1{
     background-color: red;
   }
 
-  // Day view
+  /* // Day view */
   .fc-resourceTimeGridDay-view  .fc-timegrid-now-indicator-arrow {
     position: absolute;
     border: none;
@@ -708,7 +708,7 @@ h1{
     border-radius: 50%;
   }
    
-  // Week view
+  /* // Week view */
   .fc-timeGridWeek-view .fc-timegrid-now-indicator-arrow {
     display: none;
   }

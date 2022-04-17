@@ -116,8 +116,6 @@ function Note(props) {
             return item.itemID !== e.target.id
         })
 
-        console.log(e.target.value)
-
         setItems(itemsMinusRemovedItem)
 
         updateDb({
