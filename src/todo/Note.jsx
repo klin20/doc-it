@@ -55,7 +55,7 @@ function Note(props) {
             itemID: createEventId(),
             content: undefined,
             done: 'notDone',
-            color: undefined,
+            color: noteColor,
             order: undefined
         }
 
@@ -64,7 +64,7 @@ function Note(props) {
         updateDb({
             noteID: props.noteContent.noteID,
             title: title,
-            color: undefined,
+            color: noteColor,
             items: [...items, newItem]
         }, 'save')
 
@@ -77,7 +77,7 @@ function Note(props) {
         updateDb({
             noteID: props.noteContent.noteID,
             title: e.target.value,
-            color: undefined,
+            color: noteColor,
             items: items
         }, 'save')
     }
@@ -102,7 +102,7 @@ function Note(props) {
         updateDb({
             noteID: props.noteContent.noteID,
             title: e.target.value,
-            color: undefined,
+            color: noteColor,
             items: itemsUpdatedCheckboxes
         }, 'save')
     }
@@ -125,7 +125,7 @@ function Note(props) {
         updateDb({
             noteID: props.noteContent.noteID,
             title: e.target.value,
-            color: undefined,
+            color: noteColor,
             items: itemsMinusRemovedItem
         }, 'save')
     }
@@ -153,7 +153,7 @@ function Note(props) {
         updateDb({
             noteID: props.noteContent.noteID,
             title: title,
-            color: undefined,
+            color: noteColor,
             items: itemsWithUpdatedContent
         }, 'save')
     }
@@ -170,13 +170,13 @@ function Note(props) {
         console.log(result);
         setItems(reorder(items, result.source.index, result.destination.index));
 
-        let x = reorder(items, result.source.index, result.destination.index)
+        let reorderedItems = reorder(items, result.source.index, result.destination.index)
 
         updateDb({
             noteID: props.noteContent.noteID,
             title: title,
-            color: undefined,
-            items: x
+            color: noteColor,
+            items: reorderedItems
         }, 'save')
     }
 
@@ -187,7 +187,7 @@ function Note(props) {
     // default note color
     const [noteColor, setNoteColor] = useState(props.noteContent.color)
 
-    const updateColor = (colorCode) => {
+    const updateColor = (newColorCode) => {
         // const targetTheme = document.getElementsByClassName(`note${props.noteID}`);
         // for (let i = 0; i < targetTheme.length; i++) {
         //     // targetTheme[i].style.border =`${color} 2px solid`;
@@ -195,16 +195,16 @@ function Note(props) {
         //     targetTheme[i].style.borderColor =`${color}`;
         // }
 
-        setNoteColor(colorCode)
+        setNoteColor(newColorCode)
 
         updateDb({
             noteID: props.noteContent.noteID,
             title: title,
-            color: colorCode,
+            color: newColorCode,
             items: items
         }, 'save')
 
-        console.log(colorCode)
+        console.log(newColorCode)
     }
 
 
