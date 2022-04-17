@@ -11,7 +11,7 @@ function Note(props) {
 
     // NEED DEBOUNCE/EVENT THROTTLING FOR updateContent
     // DONT WANT TO SAVE TO DB FOR EVERY CHARACTER THE USER INPUTS
-    // SAVE 1 SECOND AFTER THE LAST CHANGE
+    // SAVE 0.6 SECOND AFTER THE LAST CHANGE
 
     // https://stackoverflow.com/a/61629055/6030118
     const [entry, setEntry] = useState(undefined);
@@ -20,7 +20,6 @@ function Note(props) {
     const [delayedEntry, setDelayedEntry] = useState(undefined);
     useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
-            // Send Axios request here
             setDelayedEntry(entry);
 
 
@@ -48,7 +47,6 @@ function Note(props) {
     const [title, setTitle] = useState(props.noteContent.title)
     const [items, setItems] = useState(props.noteContent.items)
 
-    // ONE LEVEL DEEP
     const addItem = () => {
 
         let newItem = {
@@ -101,7 +99,7 @@ function Note(props) {
 
         updateDb({
             noteID: props.noteContent.noteID,
-            title: e.target.value,
+            title: title,
             color: noteColor,
             items: itemsUpdatedCheckboxes
         }, 'save')
@@ -118,24 +116,20 @@ function Note(props) {
             return item.itemID !== e.target.id
         })
 
-        console.log(itemsMinusRemovedItem)
+        console.log(e.target.value)
 
         setItems(itemsMinusRemovedItem)
 
         updateDb({
             noteID: props.noteContent.noteID,
-            title: e.target.value,
+            title: title,
             color: noteColor,
             items: itemsMinusRemovedItem
         }, 'save')
     }
 
 
-    // // TWO LEVEL DEEP
     const updateContent = (e) => {
-
-        console.log('updating content')
-        // console.log(e)
 
         let itemsWithUpdatedContent = items.map((item) => {
 
@@ -145,8 +139,6 @@ function Note(props) {
 
             return item
         })
-
-        console.log(itemsWithUpdatedContent)
 
         setItems(itemsWithUpdatedContent)
 
@@ -224,7 +216,6 @@ function Note(props) {
                     defaultValue={title}
                     name={'title'}
                     placeholder={'Title (20 char. max)'}
-                    // placeholder={noteObject.noteID}
                     maxLength={20}
                     onChange={(e) => { setEntry(e) }}
                 ></input>

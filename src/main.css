@@ -357,6 +357,7 @@ form {
 	/* border color makes controlling thin/thick top border color easier */
 	/* easier to target by react */
 	border-color: #82B2FF ;
+
 	margin: 10px;
 	min-width: 300px;
 	max-width: 325px;
