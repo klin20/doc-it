@@ -11,7 +11,7 @@ function Note(props) {
 
     // NEED DEBOUNCE/EVENT THROTTLING FOR updateContent
     // DONT WANT TO SAVE TO DB FOR EVERY CHARACTER THE USER INPUTS
-    // SAVE 1 SECOND AFTER THE LAST CHANGE
+    // SAVE 0.6 SECOND AFTER THE LAST CHANGE
 
     // https://stackoverflow.com/a/61629055/6030118
     const [entry, setEntry] = useState(undefined);
@@ -20,7 +20,6 @@ function Note(props) {
     const [delayedEntry, setDelayedEntry] = useState(undefined);
     useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
-            // Send Axios request here
             setDelayedEntry(entry);
 
 
@@ -48,14 +47,13 @@ function Note(props) {
     const [title, setTitle] = useState(props.noteContent.title)
     const [items, setItems] = useState(props.noteContent.items)
 
-    // ONE LEVEL DEEP
     const addItem = () => {
 
         let newItem = {
             itemID: createEventId(),
             content: undefined,
             done: 'notDone',
-            color: undefined,
+            color: noteColor,
             order: undefined
         }
 
@@ -64,7 +62,7 @@ function Note(props) {
         updateDb({
             noteID: props.noteContent.noteID,
             title: title,
-            color: undefined,
+            color: noteColor,
             items: [...items, newItem]
         }, 'save')
 
@@ -77,7 +75,7 @@ function Note(props) {
         updateDb({
             noteID: props.noteContent.noteID,
             title: e.target.value,
-            color: undefined,
+            color: noteColor,
             items: items
         }, 'save')
     }
@@ -101,15 +99,15 @@ function Note(props) {
 
         updateDb({
             noteID: props.noteContent.noteID,
-            title: e.target.value,
-            color: undefined,
+            title: title,
+            color: noteColor,
             items: itemsUpdatedCheckboxes
         }, 'save')
     }
 
     const showConfetti = () => {
         setRainConfetti(true);
-        setTimeout(() => { setRainConfetti(false) } , 4000);
+        setTimeout(() => { setRainConfetti(false) }, 4000);
     }
 
     const removeItem = (e) => {
@@ -118,24 +116,18 @@ function Note(props) {
             return item.itemID !== e.target.id
         })
 
-        console.log(itemsMinusRemovedItem)
-
         setItems(itemsMinusRemovedItem)
 
         updateDb({
             noteID: props.noteContent.noteID,
-            title: e.target.value,
-            color: undefined,
+            title: title,
+            color: noteColor,
             items: itemsMinusRemovedItem
         }, 'save')
     }
 
 
-    // // TWO LEVEL DEEP
     const updateContent = (e) => {
-
-        console.log('updating content')
-        // console.log(e)
 
         let itemsWithUpdatedContent = items.map((item) => {
 
@@ -146,14 +138,12 @@ function Note(props) {
             return item
         })
 
-        console.log(itemsWithUpdatedContent)
-
         setItems(itemsWithUpdatedContent)
 
         updateDb({
             noteID: props.noteContent.noteID,
             title: title,
-            color: undefined,
+            color: noteColor,
             items: itemsWithUpdatedContent
         }, 'save')
     }
@@ -170,158 +160,172 @@ function Note(props) {
         console.log(result);
         setItems(reorder(items, result.source.index, result.destination.index));
 
-        let x = reorder(items, result.source.index, result.destination.index)
+        let reorderedItems = reorder(items, result.source.index, result.destination.index)
 
         updateDb({
             noteID: props.noteContent.noteID,
             title: title,
-            color: undefined,
-            items: x
+            color: noteColor,
+            items: reorderedItems
         }, 'save')
     }
 
-    const colorButton = (color) => {
-        const targetTheme = document.getElementsByClassName(`note${props.noteID}`);
-        for (let i = 0; i < targetTheme.length; i++) {
-            targetTheme[i].style.border =`${color} 2px solid`;
-            targetTheme[i].style.borderTop =`40px ${color} solid`;
-        }
+    // CSS related code for color button 
+    const colorCode = ['#FFADAE', '#FFF0A0', '#93E396', '#85B6FF', '#D5B5FF']
+    const colorClassName = ['colorOptionOne', 'colorOptionTwo', 'colorOptionThree', 'colorOptionFour', 'colorOptionFive']
 
-        console.log(targetTheme)
+    // default note color
+    const [noteColor, setNoteColor] = useState(props.noteContent.color)
+
+    const updateColor = (newColorCode) => {
+        // const targetTheme = document.getElementsByClassName(`note${props.noteID}`);
+        // for (let i = 0; i < targetTheme.length; i++) {
+        //     // targetTheme[i].style.border =`${color} 2px solid`;
+        //     // targetTheme[i].style.borderTop =`40px ${color} solid`;
+        //     targetTheme[i].style.borderColor =`${color}`;
+        // }
+
+        setNoteColor(newColorCode)
+
+        updateDb({
+            noteID: props.noteContent.noteID,
+            title: title,
+            color: newColorCode,
+            items: items
+        }, 'save')
+
+        console.log(newColorCode)
     }
 
-return (
 
-    <div className={"note note"+ props.noteID}>
-        {rainConfetti ? <Confetti 
-                    tweenDuration={1000} recycle={false} numberOfPieces={300}/> : null}
-        <div className="titleAndRemoveButton">
 
-            <input className= "td-title"
-                defaultValue={title}
-                name={'title'}
-                placeholder={'Add title'}
-                // placeholder={noteObject.noteID}
-                maxLength={20}
-                onChange={(e) => { setEntry(e) }}
-            ></input>
-            <div className='colorSwitchContainer'>
-                <p>
-                    •••
-                </p>
-                <div className='colorSwitchOptions'>
-                    <button
-                        className="colorOptions colorOptionOne"
-                        onClick= {()=>{colorButton('#FFADAE')}}
-                    >
-                    </button>
-                    <button
-                        className="colorOptions colorOptionTwo"
-                        onClick= {()=>{colorButton('#FFF0A0')}}
-                    >
-                    </button>
-                    <button
-                        className="colorOptions colorOptionThree"
-                        onClick= {()=>{colorButton('#93E396')}}
-                    >
-                    </button>
-                    <button
-                        className="colorOptions colorOptionFour"
-                        onClick= {()=>{colorButton('#85B6FF')}}
-                    >
-                    </button>
-                    <button
-                        className="colorOptions colorOptionFive"
-                        onClick= {()=>{colorButton('#D5B5FF')}}
-                    >
-                    </button>
-                </div>
-           </div>
-            <button class="dlt-todo"
-                onClick={(e) => { removeNote(e) }}>
-                ✖
-            </button>
-        </div>
-        <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="taskList">
-                {(provided) => (
-                    <ul ref={provided.innerRef} {...provided.droppableProps} >
+    return (
+
+        <div
+            className={"note note" + props.noteID}
+            style={{
+                borderColor: noteColor
+            }}>
+            {rainConfetti ? <Confetti
+                tweenDuration={1000} recycle={false} numberOfPieces={300} /> : null}
+            <div className="titleAndRemoveButton">
+
+                <input className="td-title"
+                    defaultValue={title}
+                    name={'title'}
+                    placeholder={'Title (20 char. max)'}
+                    maxLength={20}
+                    onChange={(e) => { setEntry(e) }}
+                ></input>
+
+                <div className='colorSwitchContainer'>
+                    <p>
+                        •••
+                    </p>
+                    <div className='colorSwitchOptions'>
                         {
+                            colorCode.map((color, index) => {
 
-                            items.map((item, index) => {
+                                let colorHex = colorCode[index]
 
                                 return (
-                                    <Draggable
-                                        key={item.itemID}
-                                        draggableId={item.itemID}
-                                        index={index}
-                                    >
-                                        {(provided) => (
-                                            <li
-                                                ref={provided.innerRef}
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}>
-                                                <input
-                                                    type="checkbox"
-                                                    id={item.itemID}
-
-                                                    // remove problem shown to Kelly
-                                                    // checked, but remove pass the greenbox to another field, even if that field is not done
-
-                                                    // current version with IndexedDB, defaultChecked recreates's Kelly problem, but checked doesnt???
-                                                    checked={
-                                                        item.done === 'done' ?
-                                                            true :
-                                                            false
-                                                    }
-                                                    onChange={(e) => { toggleDone(e) }}
-                                                />
-
-                                                <TextareaAutosize
-                                                    key={item.itemID}
-                                                    id={item.itemID}
-                                                    className={item.done}
-                                                    defaultValue={item.content}
-                                                    disabled={
-                                                        item.done === 'done' ?
-                                                            true :
-                                                            false
-                                                    }
-                                                    placeholder={'click to add task'}
-                                                    // onChange={(e) => updateContent(e)}
-                                                    onChange={(e) => {
-
-                                                        // setEntry(e.target.value)
-                                                        setEntry(e)
-                                                    }}
-
-                                                />
-
-                                                <button class="dlt"
-                                                    id={item.itemID}
-                                                    onClick={(e) => { removeItem(e) }}
-                                                >🗑</button>
-
-                                            </li>
-
-                                        )}
-                                    </Draggable>
+                                    <button
+                                        // className={`colorOptions ${colorClassName[index]}`}
+                                        className={`colorOptions`}
+                                        style={{backgroundColor: colorHex}}
+                                        onClick={() => { updateColor(colorHex) }}
+                                        // onClick sends the index
+                                    ></button>
                                 )
                             })
                         }
-                        {provided.placeholder}
-                    </ul>
-                )}
-            </Droppable>
-        </DragDropContext>
+                    </div>
+                </div>
+                <button class="dlt-todo"
+                    onClick={(e) => { removeNote(e) }}>
+                    ✖
+                </button>
+            </div>
+            <DragDropContext onDragEnd={onDragEnd}>
+                <Droppable droppableId="taskList">
+                    {(provided) => (
+                        <ul ref={provided.innerRef} {...provided.droppableProps} >
+                            {
 
-        <button class="add-task"
-            onClick={(e) => { addItem(e) }}>
-            + add new task
-        </button>
+                                items.map((item, index) => {
 
-    </div>
-)
+                                    return (
+                                        <Draggable
+                                            key={item.itemID}
+                                            draggableId={item.itemID}
+                                            index={index}
+                                        >
+                                            {(provided) => (
+                                                <li
+                                                    ref={provided.innerRef}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}>
+                                                    <input
+                                                        type="checkbox"
+                                                        id={item.itemID}
+
+                                                        // remove problem shown to Kelly
+                                                        // checked, but remove pass the greenbox to another field, even if that field is not done
+
+                                                        // current version with IndexedDB, defaultChecked recreates's Kelly problem, but checked doesnt???
+                                                        checked={
+                                                            item.done === 'done' ?
+                                                                true :
+                                                                false
+                                                        }
+                                                        onChange={(e) => { toggleDone(e) }}
+                                                    />
+
+                                                    <TextareaAutosize
+                                                        key={item.itemID}
+                                                        id={item.itemID}
+                                                        className={item.done}
+                                                        defaultValue={item.content}
+                                                        disabled={
+                                                            item.done === 'done' ?
+                                                                true :
+                                                                false
+                                                        }
+                                                        placeholder={'click to add task'}
+                                                        // onChange={(e) => updateContent(e)}
+                                                        onChange={(e) => {
+
+                                                            // setEntry(e.target.value)
+                                                            setEntry(e)
+                                                        }}
+
+                                                    />
+
+                                                    <button class="dlt"
+                                                        id={item.itemID}
+                                                        onClick={(e) => { removeItem(e) }}
+                                                    >🗑</button>
+
+                                                </li>
+
+                                            )}
+                                        </Draggable>
+                                    )
+                                })
+                            }
+                            {provided.placeholder}
+                        </ul>
+                    )}
+                </Droppable>
+            </DragDropContext>
+
+            <button class="add-task"
+                onClick={(e) => { addItem(e) }}>
+                + add new task
+            </button>
+
+        </div>
+    )
 }
 
 export default Note;

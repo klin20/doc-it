@@ -352,8 +352,12 @@ form {
 }
 
 .note {
-	border: #82B2FF 2px solid;
-	border-top: 40px #82B2FF solid;
+	border: 2px solid;
+	border-top: 40px solid;
+	/* border color makes controlling thin/thick top border color easier */
+	/* easier to target by react */
+	border-color: #82B2FF ;
+
 	margin: 10px;
 	min-width: 300px;
 	max-width: 325px;
@@ -385,27 +389,6 @@ form {
 	border-radius: 0;
 }
 
-.colorOptionOne{
-	background-color: #FFADAE;
-}
-
-.colorOptionTwo {
-	background-color: #FFF0A0;
-}
-
-.colorOptionThree {
-	background-color: #93E396;
-}
-
-.colorOptionFour {
-	background-color: #85B6FF;
-}
-
-.colorOptionFive {
-	background-color: #D5B5FF;
-}
-
-.yellow
 
 ul {
 	margin: 0;
@@ -713,7 +696,7 @@ h1{
     background-color: red;
   }
 
-  // Day view
+  /* // Day view */
   .fc-resourceTimeGridDay-view  .fc-timegrid-now-indicator-arrow {
     position: absolute;
     border: none;
@@ -725,7 +708,7 @@ h1{
     border-radius: 50%;
   }
    
-  // Week view
+  /* // Week view */
   .fc-timeGridWeek-view .fc-timegrid-now-indicator-arrow {
     display: none;
   }
